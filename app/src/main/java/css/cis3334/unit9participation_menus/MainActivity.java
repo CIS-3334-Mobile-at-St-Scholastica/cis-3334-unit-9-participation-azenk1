@@ -1,6 +1,8 @@
 package css.cis3334.unit9participation_menus;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,10 +71,36 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            //Call to method showSettings
+            showSetings();
+            return true;
+        }
+
+        if(id == R.id.action_add)
+        {
+            addToast();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //Creates an intent used to open the settings screen
+    public void showSetings()
+    {
+        Intent setIntent = new Intent(Settings.ACTION_SETTINGS);
+        if(setIntent.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(setIntent);
+        }
+    }
+
+    public void addToast()
+    {
+        Toast.makeText(getApplicationContext(), R.string.add_message, Toast.LENGTH_SHORT)
+            .show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
