@@ -1,6 +1,7 @@
 package css.cis3334.unit9participation_menus;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         if(id == R.id.action_add)
         {
-            addToast();
+            addToast("add");
             return true;
         }
 
@@ -97,10 +98,38 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void addToast()
+    public void addToast(String content) {
+        if (content.equals("add")) {
+            Toast.makeText(getApplicationContext(), R.string.add_message, Toast.LENGTH_SHORT)
+                    .show();
+
+        }else if(content.equals("delete"))
+        {
+            Toast.makeText(getApplicationContext(), R.string.delete_message, Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    //Creates intent to enable user to send email.
+    public void emailTo()
     {
-        Toast.makeText(getApplicationContext(), R.string.add_message, Toast.LENGTH_SHORT)
-            .show();
+        Intent mailIntent = new Intent(Intent.ACTION_SENDTO);
+        mailIntent.setData(Uri.parse("mailto:")); //Ensures that an email app will handle intent.
+        if(mailIntent.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(mailIntent);
+        }
+    }
+
+    //Creates intent to enable user to send sms.
+    public void smsTo()
+    {
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+        smsIntent.setData(Uri.parse("smsto:"));    //Ensure handling by sms app.
+        if(smsIntent.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(smsIntent);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -121,7 +150,27 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else if(id == R.id.nav_add)
+        {
+            addToast("add");
+
+        } else if (id == R.id.nav_delete)
+        {
+            addToast("delete");
+
+        } else if (id == R.id.nav_settings)
+        {
+            showSetings();
+
+        } else if (id == R.id.nav_email)
+        {
+            emailTo();
+
+        } else if (id == R.id.nav_SMS)
+        {
+            smsTo();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
